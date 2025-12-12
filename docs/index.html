@@ -24,4 +24,10 @@
     <a target="_blank" rel="noopener" href="./reenrollment_tracker_1259_to_1262.html">Reenrollment Tracker (1259 → 1262)</a>
   </div>
 </body>
+
+$stamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+$landing = Get-Content $landingSrc -Raw
+$landing = $landing -replace "<!-- LAST_UPDATED -->", "Last updated: $stamp <!-- LAST_UPDATED -->"
+Set-Content $landingSrc $landing -Encoding UTF8
+
 </html>
