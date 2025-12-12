@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Reenrollment Tracker – 1259 to 1262</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    @page { margin: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: #f5f7fb;
+      margin: 0;
+      padding: 24px;
+      color: #111827;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 32px 0 16px 0;
+      color: #111827;
+    }
+
+    .gauge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .gauge-card {
+      background-color: #ffffff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .gauge-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #6b7280;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .gauge-wrapper {
+      position: relative;
+      height: 180px;
+    }
+
+    .gauge-value {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 36px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .gauge-label {
+      text-align: center;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .chart-card {
+      background-color: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .chart-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .chart-wrapper {
+      position: relative;
+      height: 400px;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    @media print {
+      body { padding: 0; background: #fff; }
+      .page { max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="title">Reenrollment Tracker: 1259 → 1262</div>
+    <div class="subtitle">
+      Generated: 2025-12-11 23:29:24 | Tracking 1259 freshmen and transfers into 1262
+    </div>
+
+    <div class="section-title">Overall Reenrollment Rates</div>
+    <div class="gauge-grid">
+      <div class="gauge-card">
+        <div class="gauge-title">First-time Freshmen Reenrollment</div>
+        <div class="gauge-wrapper">
+          <canvas id="freshmenGauge"></canvas>
+          <div class="gauge-value">59.6%</div>
+        </div>
+        <div class="gauge-label">582 of 977 freshmen</div>
+      </div>
+
+      <div class="gauge-card">
+        <div class="gauge-title">Transfer Students Reenrollment</div>
+        <div class="gauge-wrapper">
+          <canvas id="transfersGauge"></canvas>
+          <div class="gauge-value">62.4%</div>
+        </div>
+        <div class="gauge-label">434 of 696 transfers</div>
+      </div>
+
+      <div class="gauge-card">
+        <div class="gauge-title">Overall Cohort Reenrollment</div>
+        <div class="gauge-wrapper">
+          <canvas id="overallGauge"></canvas>
+          <div class="gauge-value">60.7%</div>
+        </div>
+        <div class="gauge-label">1,016 of 1,673 students</div>
+      </div>
+    </div>
+
+    <div class="section-title">Reenrollment by Enrollment Status (1259)</div>
+    <div class="gauge-grid">
+      <div class="gauge-card">
+        <div class="gauge-title">FULL-TIME Reenrollment (1259)</div>
+        <div class="gauge-wrapper">
+          <canvas id="ftpt0Gauge"></canvas>
+          <div class="gauge-value">68.7%</div>
+        </div>
+        <div class="gauge-label">743 of 1,082 students</div>
+      </div>
+      <div class="gauge-card">
+        <div class="gauge-title">PART-TIME Reenrollment (1259)</div>
+        <div class="gauge-wrapper">
+          <canvas id="ftpt1Gauge"></canvas>
+          <div class="gauge-value">46.2%</div>
+        </div>
+        <div class="gauge-label">273 of 591 students</div>
+      </div>
+    </div>
+
+    <div class="section-title">Reenrollment by Gender (1259)</div>
+    <div class="gauge-grid">
+      <div class="gauge-card">
+        <div class="gauge-title">Men Reenrollment (1259)</div>
+        <div class="gauge-wrapper">
+          <canvas id="gender0Gauge"></canvas>
+          <div class="gauge-value">54.6%</div>
+        </div>
+        <div class="gauge-label">294 of 538 students</div>
+      </div>
+      <div class="gauge-card">
+        <div class="gauge-title">Women Reenrollment (1259)</div>
+        <div class="gauge-wrapper">
+          <canvas id="gender1Gauge"></canvas>
+          <div class="gauge-value">63.6%</div>
+        </div>
+        <div class="gauge-label">722 of 1,135 students</div>
+      </div>
+    </div>
+
+    <div class="section-title">Reenrollment by Program (Top 10 from 1259)</div>
+    <div class="chart-card" style="margin-bottom: 24px;">
+      <div class="chart-title">Program-level Reenrollment Rates</div>
+      <div class="chart-wrapper">
+        <canvas id="programChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const dashboardData = {
+  "meta": {
+    "source_term": "1259",
+    "target_term": "1262",
+    "generated_ts": "2025-12-11 23:29:24"
+  },
+  "overall": {
+    "total": 1673,
+    "reenrolled": 1016,
+    "rate": 60.7
+  },
+  "freshmen": {
+    "total": 977,
+    "reenrolled": 582,
+    "rate": 59.6
+  },
+  "transfers": {
+    "total": 696,
+    "reenrolled": 434,
+    "rate": 62.4
+  },
+  "ftpt": [
+    {
+      "label": "FULL-TIME",
+      "total": 1082,
+      "reenrolled": 743,
+      "rate": 68.7
+    },
+    {
+      "label": "PART-TIME",
+      "total": 591,
+      "reenrolled": 273,
+      "rate": 46.2
+    }
+  ],
+  "gender": [
+    {
+      "label": "Men",
+      "total": 538,
+      "reenrolled": 294,
+      "rate": 54.6
+    },
+    {
+      "label": "Women",
+      "total": 1135,
+      "reenrolled": 722,
+      "rate": 63.6
+    }
+  ],
+  "programs": [
+    {
+      "label": "Liberal Arts and Science AA",
+      "total": 460,
+      "reenrolled": 289,
+      "rate": 62.8
+    },
+    {
+      "label": "Radiologic Technology AAS",
+      "total": 315,
+      "reenrolled": 200,
+      "rate": 63.5
+    },
+    {
+      "label": "Dental Hygiene AAS",
+      "total": 162,
+      "reenrolled": 101,
+      "rate": 62.3
+    },
+    {
+      "label": "Practical Nursing CERT",
+      "total": 113,
+      "reenrolled": 52,
+      "rate": 46.0
+    },
+    {
+      "label": "Business Management AS",
+      "total": 98,
+      "reenrolled": 56,
+      "rate": 57.1
+    },
+    {
+      "label": "Criminal Justice AA",
+      "total": 88,
+      "reenrolled": 43,
+      "rate": 48.9
+    },
+    {
+      "label": "Computer Science AS",
+      "total": 69,
+      "reenrolled": 42,
+      "rate": 60.9
+    },
+    {
+      "label": "Early Childhood Education AAS",
+      "total": 58,
+      "reenrolled": 37,
+      "rate": 63.8
+    },
+    {
+      "label": "Game Design AAS",
+      "total": 48,
+      "reenrolled": 35,
+      "rate": 72.9
+    },
+    {
+      "label": "Digital Dsgn and Animation AAS",
+      "total": 45,
+      "reenrolled": 30,
+      "rate": 66.7
+    }
+  ]
+};
+
+    const dataLabelsPlugin = {
+      id: 'customDataLabels',
+      afterDatasetsDraw(chart) {
+        const ctx = chart.ctx;
+        chart.data.datasets.forEach((dataset, i) => {
+          const meta = chart.getDatasetMeta(i);
+          meta.data.forEach((bar, index) => {
+            const label = chart.options.plugins.customLabels?.labels?.[index] || '';
+            if (!label) return;
+
+            ctx.fillStyle = '#374151';
+            ctx.font = 'bold 11px system-ui';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+
+            const padding = 6;
+            const x = bar.x + padding;
+            const y = bar.y;
+            ctx.fillText(label, x, y);
+          });
+        });
+      }
+    };
+
+    function createGauge(canvasId, percentage, color) {
+      const el = document.getElementById(canvasId);
+      if (!el) return;
+      const ctx = el.getContext('2d');
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          datasets: [{
+            data: [percentage, 100 - percentage],
+            backgroundColor: [color, '#e5e7eb'],
+            borderWidth: 0,
+            circumference: 180,
+            rotation: 270
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          cutout: '75%',
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled: false }
+          }
+        }
+      });
+    }
+
+    function createBarChart(canvasId, data) {
+      const el = document.getElementById(canvasId);
+      if (!el) return;
+      const ctx = el.getContext('2d');
+
+      const labels = data.map(d => d.label);
+      const rates = data.map(d => d.rate);
+      const displayLabels = data.map(d => `${d.reenrolled}/${d.total} (${d.rate}%)`);
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Reenrollment Rate',
+            data: rates,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return displayLabels[context.dataIndex];
+                }
+              }
+            },
+            customLabels: {
+              labels: displayLabels
+            }
+          },
+          scales: {
+            x: {
+              max: 100,
+              ticks: {
+                callback: function(v) { return v + '%'; }
+              }
+            },
+            y: {
+              ticks: { autoSkip: false }
+            }
+          }
+        },
+        plugins: [dataLabelsPlugin]
+      });
+    }
+
+    window.addEventListener('load', function() {
+      createGauge('freshmenGauge', dashboardData.freshmen.rate, '#3b82f6');
+      createGauge('transfersGauge', dashboardData.transfers.rate, '#8b5cf6');
+      createGauge('overallGauge', dashboardData.overall.rate, '#10b981');
+
+      const ftptColors = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b'];
+      (dashboardData.ftpt || []).forEach((item, i) => {
+        createGauge(`ftpt${i}Gauge`, item.rate, ftptColors[i % ftptColors.length]);
+      });
+
+      const genderColors = ['#ec4899', '#3b82f6', '#10b981', '#f59e0b'];
+      (dashboardData.gender || []).forEach((item, i) => {
+        createGauge(`gender${i}Gauge`, item.rate, genderColors[i % genderColors.length]);
+      });
+
+      createBarChart('programChart', dashboardData.programs || []);
+    });
+  </script>
+</body>
+</html>

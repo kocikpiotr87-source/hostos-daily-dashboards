@@ -1,0 +1,11 @@
+﻿# Keep this repo pages-only
+*.parquet
+*.duckdb
+*.csv
+*.db
+*.log
+.venv/
+Incoming/
+Archive/
+Outputs/
+Logs/
