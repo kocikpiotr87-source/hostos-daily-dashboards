@@ -4,8 +4,22 @@
   <meta charset="utf-8">
   <title>Reenrollment Tracker – 1259 to 1262</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+
+  <!-- Prefer local assets (works offline). Fallback to CDN if missing. -->
+  <script src="assets/chart.umd.min.js"></script>
+  <script>
+    if (typeof Chart === 'undefined') {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"><' + '/script>');
+    }
+  </script>
+
+  <script src="assets/chartjs-plugin-datalabels.min.js"></script>
+  <script>
+    if (typeof ChartDataLabels === 'undefined') {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"><' + '/script>');
+    }
+  </script>
+
   <style>
     @page { margin: 0; }
     body {
@@ -18,33 +32,24 @@
     .page { max-width: 1200px; margin: 0 auto; }
     .title { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
     .subtitle { font-size: 12px; color: #6b7280; margin-bottom: 16px; }
-    .grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    .card {
-      background: #fff; border-radius: 16px; padding: 14px 16px;
-      box-shadow: 0 10px 30px rgba(17,24,39,.08);
-    }
-    .kpis {
-      display: grid; grid-template-columns: 1fr 1fr 1fr;
-      gap: 16px; margin-bottom: 16px;
-    }
-    .kpi {
-      background: #fff; border-radius: 16px; padding: 14px 16px;
-      box-shadow: 0 10px 30px rgba(17,24,39,.08);
-    }
-    .kpi h4 { margin: 0; font-size: 12px; color: #6b7280; font-weight: 600; }
-    .kpi .big { font-size: 26px; font-weight: 800; margin-top: 6px; }
-    .kpi .small { font-size: 12px; color: #6b7280; margin-top: 2px; }
-    .card h3 { margin: 0 0 10px 0; font-size: 14px; color: #111827; }
+
+    .kpis { display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .kpi { background:#fff; border-radius:16px; padding:14px 16px; box-shadow:0 10px 30px rgba(17,24,39,.08); overflow:hidden; }
+    .kpi h4 { margin:0; font-size:12px; color:#6b7280; font-weight:600; }
+    .kpi .big { font-size:26px; font-weight:800; margin-top:6px; }
+    .kpi .small { font-size:12px; color:#6b7280; margin-top:2px; }
+
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .card { background:#fff; border-radius:16px; padding:14px 16px; box-shadow:0 10px 30px rgba(17,24,39,.08); overflow:hidden; }
+    .card h3 { margin:0 0 10px 0; font-size:14px; color:#111827; }
     canvas { width: 100% !important; height: 260px !important; }
   </style>
 </head>
+
 <body>
   <div class="page">
     <div class="title">Reenrollment Tracker – 1259 to 1262</div>
-    <div class="subtitle">Generated: 2026-01-26 14:24:13 &nbsp;&nbsp; | &nbsp;&nbsp; Source: C:\Users\pkoci\OneDrive - CUNY\Documents - Hostos OIERA\OIERA Data Exchange\Current Term File\Daily_Updates_Show\Outputs\enrollment_latest.parquet &nbsp;&nbsp; | &nbsp;&nbsp; Cohort: Freshmen + Transfers</div>
+    <div class="subtitle">Generated: 2026-01-26 14:44:16 &nbsp;&nbsp; | &nbsp;&nbsp; Source: C:\Users\pkoci\OneDrive - CUNY\Documents - Hostos OIERA\OIERA Data Exchange\Current Term File\Daily_Updates_Show\Outputs\enrollment_latest.parquet &nbsp;&nbsp; | &nbsp;&nbsp; Cohort: Freshmen + Transfers</div>
 
     <div class="kpis">
       <div class="kpi" id="kpiOverall"></div>
@@ -71,173 +76,130 @@
   </div>
 
   <script>
-    const dashboardData = {
-  "meta": {
-    "source_term": "1259",
-    "target_term": "1262",
-    "generated_ts": "2026-01-26 14:24:13",
-    "csv_path": "C:\\Users\\pkoci\\OneDrive - CUNY\\Documents - Hostos OIERA\\OIERA Data Exchange\\Current Term File\\Daily_Updates_Show\\Outputs\\enrollment_latest.parquet"
-  },
-  "overall": {
-    "total": 1672,
-    "reenrolled": 1266,
-    "rate": 75.7
-  },
-  "freshmen": {
-    "total": 976,
-    "reenrolled": 725,
-    "rate": 74.3
-  },
-  "transfers": {
-    "total": 696,
-    "reenrolled": 541,
-    "rate": 77.7
-  },
-  "ftpt": [
-    {
-      "label": "FULL-TIME",
-      "total": 1081,
-      "reenrolled": 889,
-      "rate": 82.2
-    },
-    {
-      "label": "PART-TIME",
-      "total": 591,
-      "reenrolled": 377,
-      "rate": 63.8
-    }
-  ],
-  "gender": [
-    {
-      "label": "Women",
-      "total": 1135,
-      "reenrolled": 867,
-      "rate": 76.4
-    },
-    {
-      "label": "Men",
-      "total": 537,
-      "reenrolled": 399,
-      "rate": 74.3
-    }
-  ],
-  "programs": [
-    {
-      "label": "Liberal Arts and Science AA",
-      "total": 459,
-      "reenrolled": 355,
-      "rate": 77.3
-    },
-    {
-      "label": "Radiologic Technology AAS",
-      "total": 316,
-      "reenrolled": 241,
-      "rate": 76.3
-    },
-    {
-      "label": "Dental Hygiene AAS",
-      "total": 161,
-      "reenrolled": 122,
-      "rate": 75.8
-    },
-    {
-      "label": "Practical Nursing CERT",
-      "total": 113,
-      "reenrolled": 74,
-      "rate": 65.5
-    },
-    {
-      "label": "Business Management AS",
-      "total": 97,
-      "reenrolled": 71,
-      "rate": 73.2
-    },
-    {
-      "label": "Criminal Justice AA",
-      "total": 87,
-      "reenrolled": 67,
-      "rate": 77.0
-    },
-    {
-      "label": "Computer Science AS",
-      "total": 68,
-      "reenrolled": 50,
-      "rate": 73.5
-    },
-    {
-      "label": "Early Childhood Education AAS",
-      "total": 59,
-      "reenrolled": 47,
-      "rate": 79.7
-    },
-    {
-      "label": "Game Design AAS",
-      "total": 49,
-      "reenrolled": 41,
-      "rate": 83.7
-    },
-    {
-      "label": "Digital Dsgn and Animation AAS",
-      "total": 45,
-      "reenrolled": 37,
-      "rate": 82.2
-    }
-  ]
-};
+    const dashboardData = {"meta": {"source_term": "1259", "target_term": "1262", "generated_ts": "2026-01-26 14:44:16", "csv_path": "C:\\Users\\pkoci\\OneDrive - CUNY\\Documents - Hostos OIERA\\OIERA Data Exchange\\Current Term File\\Daily_Updates_Show\\Outputs\\enrollment_latest.parquet"}, "overall": {"total": 1672, "reenrolled": 1266, "rate": 75.7}, "freshmen": {"total": 976, "reenrolled": 725, "rate": 74.3}, "transfers": {"total": 696, "reenrolled": 541, "rate": 77.7}, "ftpt": [{"label": "FULL-TIME", "total": 1081, "reenrolled": 889, "rate": 82.2}, {"label": "PART-TIME", "total": 591, "reenrolled": 377, "rate": 63.8}], "gender": [{"label": "Women", "total": 1135, "reenrolled": 867, "rate": 76.4}, {"label": "Men", "total": 537, "reenrolled": 399, "rate": 74.3}], "programs": [{"label": "Liberal Arts and Science AA", "total": 459, "reenrolled": 355, "rate": 77.3}, {"label": "Radiologic Technology AAS", "total": 316, "reenrolled": 241, "rate": 76.3}, {"label": "Dental Hygiene AAS", "total": 161, "reenrolled": 122, "rate": 75.8}, {"label": "Practical Nursing CERT", "total": 113, "reenrolled": 74, "rate": 65.5}, {"label": "Business Management AS", "total": 97, "reenrolled": 71, "rate": 73.2}, {"label": "Criminal Justice AA", "total": 87, "reenrolled": 67, "rate": 77.0}, {"label": "Computer Science AS", "total": 68, "reenrolled": 50, "rate": 73.5}, {"label": "Early Childhood Education AAS", "total": 59, "reenrolled": 47, "rate": 79.7}, {"label": "Game Design AAS", "total": 49, "reenrolled": 41, "rate": 83.7}, {"label": "Digital Dsgn and Animation AAS", "total": 45, "reenrolled": 37, "rate": 82.2}]};
 
-    Chart.register(ChartDataLabels);
+    function safeRegister() {
+      if (typeof Chart === 'undefined') {
+        console.error('Chart.js failed to load (offline/blocked).');
+        return false;
+      }
+      if (typeof ChartDataLabels !== 'undefined') {
+        Chart.register(ChartDataLabels);
+      } else {
+        console.warn('ChartDataLabels missing; charts render without labels.');
+      }
+      return true;
+    }
 
     function kpiHTML(title, obj) {
       const rate = obj.rate ?? 0;
+      const reen = obj.reenrolled ?? 0;
+      const tot  = obj.total ?? 0;
       return (
         '<h4>' + title + '</h4>' +
         '<div class="big">' + rate + '%</div>' +
-        '<div class="small">' + obj.reenrolled.toLocaleString() + ' reenrolled / ' + obj.total.toLocaleString() + ' total</div>'
+        '<div class="small">' + reen.toLocaleString() + ' reenrolled / ' + tot.toLocaleString() + ' total</div>'
       );
     }
 
-function buildBarConfig(labels, totals, reenrolled, rates, horizontal=true)
-
+    function buildStackedBar(labels, totals, reenrolled, rates, horizontal=true) {
+      const maxVal = Math.max(...totals, ...reenrolled, 0);
+      return {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            { label: 'Total', data: totals, borderRadius: 10, barThickness: 18, clip: false },
+            { label: 'Reenrolled', data: reenrolled, borderRadius: 10, barThickness: 18, clip: false }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: horizontal ? 'y' : 'x',
+          layout: { padding: { right: 70, left: 6, top: 6, bottom: 6 } },
+          plugins: {
+            legend: { position: 'top' },
+            datalabels: {
+              anchor: 'end',
+              align: 'right',
+              clamp: true,
+              clip: false,
+              formatter: (value, ctx) => {
+                if (ctx.datasetIndex !== 1) return '';
+                const i = ctx.dataIndex;
+                const reen = reenrolled[i] ?? 0;
+                const tot  = totals[i] ?? 0;
+                const rate = rates[i] ?? 0;
+                return reen.toLocaleString() + ' / ' + tot.toLocaleString() + ' (' + rate + '%)';
+              }
+            },
+            tooltip: {
+              callbacks: {
+                afterBody: (items) => {
+                  const i = items?.[0]?.dataIndex ?? 0;
+                  return 'Rate: ' + (rates[i] ?? 0) + '%';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              suggestedMax: maxVal * 1.10,
+              grid: { color: 'rgba(17,24,39,.06)' }
+            },
+            y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+          }
+        }
+      };
+    }
 
     window.addEventListener('DOMContentLoaded', () => {
+      if (!safeRegister()) return;
+
       document.getElementById('kpiOverall').innerHTML = kpiHTML('Overall Cohort Reenrollment', dashboardData.overall);
       document.getElementById('kpiFresh').innerHTML   = kpiHTML('Freshmen Reenrollment', dashboardData.freshmen);
       document.getElementById('kpiTrans').innerHTML   = kpiHTML('Transfers Reenrollment', dashboardData.transfers);
 
-      const ftpt = dashboardData.ftpt || [];
+      const ftpt   = dashboardData.ftpt || [];
       const gender = dashboardData.gender || [];
-      const progs = dashboardData.programs || [];
+      const progs  = dashboardData.programs || [];
 
-      new Chart(document.getElementById('ftptChart'), buildBarConfig(
+      new Chart(document.getElementById('ftptChart'), buildStackedBar(
         ftpt.map(d=>d.label), ftpt.map(d=>d.total), ftpt.map(d=>d.reenrolled), ftpt.map(d=>d.rate), true
       ));
-
-      new Chart(document.getElementById('genderChart'), buildBarConfig(
+      new Chart(document.getElementById('genderChart'), buildStackedBar(
         gender.map(d=>d.label), gender.map(d=>d.total), gender.map(d=>d.reenrolled), gender.map(d=>d.rate), true
       ));
 
-      // Programs: rate-only + labels
+      // Programs: rate-only + labels (and extra bottom padding to reduce cutoff)
+      const progRates = progs.map(d => d.rate);
+      const maxRate = Math.max(...progRates, 0);
+
       new Chart(document.getElementById('programChart'), {
         type: 'bar',
         data: {
           labels: progs.map(d=>d.label),
           datasets: [{
             label: 'Reenrollment Rate (%)',
-            data: progs.map(d=>d.rate),
+            data: progRates,
             borderRadius: 10,
-            barThickness: 20
+            barThickness: 20,
+            clip: false
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          layout: { padding: { top: 10, right: 16 } },
+          layout: { padding: { top: 10, right: 18, bottom: 24, left: 6 } },
           plugins: {
             legend: { display: false },
             datalabels: {
               anchor: 'end',
               align: 'top',
               clamp: true,
+              clip: false,
               formatter: (value) => String(value) + '%'
             }
           },
@@ -248,7 +210,7 @@ function buildBarConfig(labels, totals, reenrolled, rates, horizontal=true)
             },
             y: {
               beginAtZero: true,
-              suggestedMax: 100,
+              suggestedMax: Math.max(100, maxRate * 1.15),
               grid: { color: 'rgba(17,24,39,.06)' },
               ticks: { callback: (v)=> v + '%' }
             }
