@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>Reenrollment Tracker – 1259 to 1262</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
   <style>
     @page { margin: 0; }
@@ -43,7 +44,7 @@
 <body>
   <div class="page">
     <div class="title">Reenrollment Tracker – 1259 to 1262</div>
-    <div class="subtitle">Generated: 2026-01-26 13:16:09 &nbsp;&nbsp; | &nbsp;&nbsp; Source: C:\Users\pkoci\OneDrive - CUNY\Documents - Hostos OIERA\OIERA Data Exchange\Current Term File\Daily_Updates_Show\Outputs\enrollment_latest.parquet &nbsp;&nbsp; | &nbsp;&nbsp; Cohort: Freshmen + Transfers</div>
+    <div class="subtitle">Generated: 2026-01-26 13:36:14 &nbsp;&nbsp; | &nbsp;&nbsp; Source: C:\Users\pkoci\OneDrive - CUNY\Documents - Hostos OIERA\OIERA Data Exchange\Current Term File\Daily_Updates_Show\Outputs\enrollment_latest.parquet &nbsp;&nbsp; | &nbsp;&nbsp; Cohort: Freshmen + Transfers</div>
 
     <div class="kpis">
       <div class="kpi" id="kpiOverall"></div>
@@ -70,13 +71,11 @@
   </div>
 
   <script>
-  Chart.register(ChartDataLabels);
-
     const dashboardData = {
   "meta": {
     "source_term": "1259",
     "target_term": "1262",
-    "generated_ts": "2026-01-26 13:16:09",
+    "generated_ts": "2026-01-26 13:36:14",
     "csv_path": "C:\\Users\\pkoci\\OneDrive - CUNY\\Documents - Hostos OIERA\\OIERA Data Exchange\\Current Term File\\Daily_Updates_Show\\Outputs\\enrollment_latest.parquet"
   },
   "overall": {
@@ -186,13 +185,15 @@
   ]
 };
 
+    Chart.register(ChartDataLabels);
+
     function kpiHTML(title, obj) {
       const rate = obj.rate ?? 0;
-      return `
-        <h4>${title}</h4>
-        <div class="big">${rate}%</div>
-        <div class="small">${obj.reenrolled.toLocaleString()} reenrolled / ${obj.total.toLocaleString()} total</div>
-      `;
+      return (
+        '<h4>' + title + '</h4>' +
+        '<div class="big">' + rate + '%</div>' +
+        '<div class="small">' + obj.reenrolled.toLocaleString() + ' reenrolled / ' + obj.total.toLocaleString() + ' total</div>'
+      );
     }
 
     function buildBarConfig(labels, totals, reenrolled, rates, horizontal=true) {
@@ -219,12 +220,27 @@
           responsive: true,
           maintainAspectRatio: false,
           indexAxis: horizontal ? 'y' : 'x',
+          layout: { padding: { right: 32 } },
           plugins: {
             legend: { position: 'top' },
+            datalabels: {
+              anchor: 'end',
+              align: 'right',
+              clamp: true,
+              formatter: (value, ctx) => {
+                // only label the Reenrolled dataset (index 1)
+                if (ctx.datasetIndex !== 1) return '';
+                const i = ctx.dataIndex;
+                const reen = reenrolled[i] ?? 0;
+                const tot = totals[i] ?? 0;
+                const rate = rates[i] ?? 0;
+                return reen.toLocaleString() + ' / ' + tot.toLocaleString() + ' (' + rate + '%)';
+              }
+            },
             tooltip: {
               callbacks: {
                 afterBody: (items) => {
-                  const i = items?.[0]?.dataIndex ?? 0;
+                  const i = (items && items[0] && items[0].dataIndex) ? items[0].dataIndex : 0;
                   return 'Rate: ' + (rates[i] ?? 0) + '%';
                 }
               }
@@ -239,7 +255,6 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      // KPI cards
       document.getElementById('kpiOverall').innerHTML = kpiHTML('Overall Cohort Reenrollment', dashboardData.overall);
       document.getElementById('kpiFresh').innerHTML   = kpiHTML('Freshmen Reenrollment', dashboardData.freshmen);
       document.getElementById('kpiTrans').innerHTML   = kpiHTML('Transfers Reenrollment', dashboardData.transfers);
@@ -256,7 +271,7 @@
         gender.map(d=>d.label), gender.map(d=>d.total), gender.map(d=>d.reenrolled), gender.map(d=>d.rate), true
       ));
 
-      // Programs: show rate as a single dataset (cleaner)
+      // Programs: rate-only + labels
       new Chart(document.getElementById('programChart'), {
         type: 'bar',
         data: {
@@ -271,7 +286,16 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
+          layout: { padding: { top: 10, right: 16 } },
+          plugins: {
+            legend: { display: false },
+            datalabels: {
+              anchor: 'end',
+              align: 'top',
+              clamp: true,
+              formatter: (value) => String(value) + '%'
+            }
+          },
           scales: {
             x: {
               grid: { display: false },

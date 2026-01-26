@@ -4,6 +4,8 @@
   <title>Daily Enrollment Snapshot – 1262</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+
   <style>
     @page { margin: 0; }
     body {
@@ -41,7 +43,7 @@
 <body>
   <div class="page">
     <div class="title">Daily Enrollment Snapshot – 1262</div>
-    <div class="subtitle">Generated: 2026-01-26 13:16:09 &nbsp;&nbsp; | &nbsp;&nbsp; Source: C:\Users\pkoci\OneDrive - CUNY\Documents - Hostos OIERA\OIERA Data Exchange\Current Term File\Daily_Updates_Show\Outputs\enrollment_latest.parquet</div>
+    <div class="subtitle">Generated: 2026-01-26 13:36:14 &nbsp;&nbsp; | &nbsp;&nbsp; Source: C:\Users\pkoci\OneDrive - CUNY\Documents - Hostos OIERA\OIERA Data Exchange\Current Term File\Daily_Updates_Show\Outputs\enrollment_latest.parquet</div>
 
     <div class="kpi-card">
       <div>
@@ -72,7 +74,7 @@
       </div>
     </div>
 
-    <div class="footnote">Bars show counts; labels show N and percent of total headcount.</div>
+    <div class="footnote">Labels show N and percent of total headcount.</div>
   </div>
 
   <script>
@@ -80,7 +82,7 @@
   "meta": {
     "total_headcount": 5633,
     "term": "1262",
-    "generated_ts": "2026-01-26 13:16:09",
+    "generated_ts": "2026-01-26 13:36:14",
     "csv_path": "C:\\Users\\pkoci\\OneDrive - CUNY\\Documents - Hostos OIERA\\OIERA Data Exchange\\Current Term File\\Daily_Updates_Show\\Outputs\\enrollment_latest.parquet"
   },
   "admit": [
@@ -265,6 +267,9 @@
   ]
 };
 
+    // IMPORTANT: register the plugin once
+    Chart.register(ChartDataLabels);
+
     function buildBarConfig(labels, counts, pcts, horizontal=true) {
       return {
         type: 'bar',
@@ -281,8 +286,19 @@
           responsive: true,
           maintainAspectRatio: false,
           indexAxis: horizontal ? 'y' : 'x',
+          layout: { padding: { right: 24 } },
           plugins: {
             legend: { display: false },
+            datalabels: {
+              anchor: 'end',
+              align: 'right',
+              clamp: true,
+              formatter: (value, ctx) => {
+                const i = ctx.dataIndex;
+                const pct = (pcts[i] ?? 0);
+                return value.toLocaleString() + ' (' + pct + '%)';
+              }
+            },
             tooltip: {
               callbacks: {
                 label: (ctx) => {
