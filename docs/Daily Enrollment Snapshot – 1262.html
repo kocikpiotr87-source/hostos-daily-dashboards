@@ -43,7 +43,7 @@
 <body>
   <div class="page">
     <div class="title">Daily Enrollment Snapshot – 1262</div>
-    <div class="subtitle">Generated: 2026-01-26 13:52:11 &nbsp;&nbsp; | &nbsp;&nbsp; Source: C:\Users\pkoci\OneDrive - CUNY\Documents - Hostos OIERA\OIERA Data Exchange\Current Term File\Daily_Updates_Show\Outputs\enrollment_latest.parquet</div>
+    <div class="subtitle">Generated: 2026-01-26 14:20:14 &nbsp;&nbsp; | &nbsp;&nbsp; Source: C:\Users\pkoci\OneDrive - CUNY\Documents - Hostos OIERA\OIERA Data Exchange\Current Term File\Daily_Updates_Show\Outputs\enrollment_latest.parquet</div>
 
     <div class="kpi-card">
       <div>
@@ -82,7 +82,7 @@
   "meta": {
     "total_headcount": 5633,
     "term": "1262",
-    "generated_ts": "2026-01-26 13:52:11",
+    "generated_ts": "2026-01-26 14:20:14",
     "csv_path": "C:\\Users\\pkoci\\OneDrive - CUNY\\Documents - Hostos OIERA\\OIERA Data Exchange\\Current Term File\\Daily_Updates_Show\\Outputs\\enrollment_latest.parquet"
   },
   "admit": [
@@ -270,9 +270,8 @@
     // IMPORTANT: register the plugin once
     Chart.register(ChartDataLabels);
 
-    function buildBarConfig(labels, counts, pcts, horizontal=true) {
-      return {
-        type: 'bar',
+function buildBarConfig(labels, totals, reenrolled, rates, horizontal=true)
+   type: 'bar',
         data: {
           labels: labels,
           datasets: [{

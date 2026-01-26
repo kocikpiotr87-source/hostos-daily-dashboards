@@ -44,7 +44,7 @@
 <body>
   <div class="page">
     <div class="title">Reenrollment Tracker – 1259 to 1262</div>
-    <div class="subtitle">Generated: 2026-01-26 13:52:12 &nbsp;&nbsp; | &nbsp;&nbsp; Source: C:\Users\pkoci\OneDrive - CUNY\Documents - Hostos OIERA\OIERA Data Exchange\Current Term File\Daily_Updates_Show\Outputs\enrollment_latest.parquet &nbsp;&nbsp; | &nbsp;&nbsp; Cohort: Freshmen + Transfers</div>
+    <div class="subtitle">Generated: 2026-01-26 14:20:15 &nbsp;&nbsp; | &nbsp;&nbsp; Source: C:\Users\pkoci\OneDrive - CUNY\Documents - Hostos OIERA\OIERA Data Exchange\Current Term File\Daily_Updates_Show\Outputs\enrollment_latest.parquet &nbsp;&nbsp; | &nbsp;&nbsp; Cohort: Freshmen + Transfers</div>
 
     <div class="kpis">
       <div class="kpi" id="kpiOverall"></div>
@@ -75,7 +75,7 @@
   "meta": {
     "source_term": "1259",
     "target_term": "1262",
-    "generated_ts": "2026-01-26 13:52:12",
+    "generated_ts": "2026-01-26 14:20:15",
     "csv_path": "C:\\Users\\pkoci\\OneDrive - CUNY\\Documents - Hostos OIERA\\OIERA Data Exchange\\Current Term File\\Daily_Updates_Show\\Outputs\\enrollment_latest.parquet"
   },
   "overall": {
@@ -196,63 +196,8 @@
       );
     }
 
-    function buildBarConfig(labels, totals, reenrolled, rates, horizontal=true) {
-      return {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: 'Total',
-              data: totals,
-              borderRadius: 10,
-              barThickness: 18
-            },
-            {
-              label: 'Reenrolled',
-              data: reenrolled,
-              borderRadius: 10,
-              barThickness: 18
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          indexAxis: horizontal ? 'y' : 'x',
-          layout: { padding: { right: 32 } },
-          plugins: {
-            legend: { position: 'top' },
-            datalabels: {
-              anchor: 'end',
-              align: 'right',
-              clamp: true,
-              formatter: (value, ctx) => {
-                // only label the Reenrolled dataset (index 1)
-                if (ctx.datasetIndex !== 1) return '';
-                const i = ctx.dataIndex;
-                const reen = reenrolled[i] ?? 0;
-                const tot = totals[i] ?? 0;
-                const rate = rates[i] ?? 0;
-                return reen.toLocaleString() + ' / ' + tot.toLocaleString() + ' (' + rate + '%)';
-              }
-            },
-            tooltip: {
-              callbacks: {
-                afterBody: (items) => {
-                  const i = (items && items[0] && items[0].dataIndex) ? items[0].dataIndex : 0;
-                  return 'Rate: ' + (rates[i] ?? 0) + '%';
-                }
-              }
-            }
-          },
-          scales: {
-            x: { beginAtZero: true, grid: { color: 'rgba(17,24,39,.06)' } },
-            y: { grid: { display: false }, ticks: { font: { size: 11 } } }
-          }
-        }
-      };
-    }
+function buildBarConfig(labels, totals, reenrolled, rates, horizontal=true)
+
 
     window.addEventListener('DOMContentLoaded', () => {
       document.getElementById('kpiOverall').innerHTML = kpiHTML('Overall Cohort Reenrollment', dashboardData.overall);
