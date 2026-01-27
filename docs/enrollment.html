@@ -1,7 +1,7 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>Daily Enrollment Snapshot – 1262</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -21,124 +21,177 @@
   </script>
 
   <style>
-    body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background:#f5f7fb; margin:0; padding:24px; color:#111827; }
-    .page { max-width: 1200px; margin:0 auto; }
-    .title { font-size:24px; font-weight:800; margin:0 0 4px 0; }
-    .subtitle { font-size:12px; color:#6b7280; margin:0 0 16px 0; }
+    @page { margin: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: #f5f7fb;
+      margin: 0;
+      padding: 24px;
+      color: #111827;
+    }
+    .page { max-width: 1200px; margin: 0 auto; }
 
-    .kpis { display:grid; grid-template-columns: 1fr 1fr 1fr; gap:16px; margin-bottom:16px; }
-    .kpi { background:#fff; border-radius:16px; padding:14px 16px; box-shadow:0 10px 30px rgba(17,24,39,.08); }
-    .kpi h4 { margin:0; font-size:12px; color:#6b7280; font-weight:600; }
-    .kpi .big { font-size:26px; font-weight:900; margin-top:6px; }
-    .kpi .small { font-size:12px; color:#6b7280; margin-top:2px; }
+    .titlebar { display:flex; justify-content:space-between; align-items:flex-end; gap:12px; margin-bottom: 10px; }
+    .title { font-size: 24px; font-weight: 800; margin: 0; }
+    .subtitle { font-size: 12px; color: #6b7280; margin: 4px 0 0 0; }
+    .links { font-size: 12px; color:#374151; text-align:right; }
+
+    .kpi-card {
+      background:#fff; border-radius:16px; padding:14px 16px;
+      box-shadow:0 10px 30px rgba(17,24,39,.08);
+      margin-bottom: 16px;
+    }
+    .kpi-label { font-size: 12px; color:#6b7280; font-weight: 700; }
+    .kpi-value { font-size: 28px; font-weight: 900; margin-top: 6px; }
 
     .grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
     .card { background:#fff; border-radius:16px; padding:14px 16px; box-shadow:0 10px 30px rgba(17,24,39,.08); overflow:hidden; }
-    .card h3 { margin:0 0 10px 0; font-size:14px; }
-    canvas { width:100% !important; height:260px !important; }
+    .card h3 { margin:0 0 10px 0; font-size:14px; color:#111827; }
+     canvas { height: 260px !important; }
+      #programChart { height: 320px !important; }
+
+                       .footnote { margin-top: 10px; font-size: 12px; color:#6b7280; }
   </style>
 </head>
+
 <body>
   <div class="page">
-    <div class="title">Daily Enrollment Snapshot – 1262</div>
-    <div class="subtitle">Generated: 2026-01-27 09:46:58 &nbsp; | &nbsp; Source: C:\Users\pkoci\OneDrive - CUNY\Documents - Hostos OIERA\OIERA Data Exchange\Current Term File\Daily_Updates_Show\Incoming\dly_cbil_history_f.csv &nbsp; | &nbsp; Filter: IR_HEADCOUNT = 1</div>
+    <div class="titlebar">
+      <div>
+        <div class="title">Daily Enrollment Snapshot – 1262</div>
+        <div class="subtitle">Generated: 2026-01-27 12:23:02 &nbsp;&nbsp; | &nbsp;&nbsp; Source: C:\Users\pkoci\OneDrive - CUNY\Documents - Hostos OIERA\OIERA Data Exchange\Current Term File\Daily_Updates_Show\Incoming\dly_cbil_history_f.csv &nbsp;&nbsp; | &nbsp;&nbsp; Filter: IR_HEADCOUNT = 1</div>
+      </div>
+      <div class="links">
+        <b>Power BI:</b>
+        <a href="https://app.powerbi.com/links/91UmCKat20?ctid=6f60f0b3-5f06-4e09-9715-989dba8cc7d8&pbi_source=linkShare" target="_blank" rel="noopener">Open in Power BI Service</a>
+        &nbsp;|&nbsp;
+        <b>PDF Export:</b>
+        <a href="pbi_report.pdf" target="_blank" rel="noopener">pbi_report.pdf</a>
+        <span style="color:#9ca3af;">(Enrollment)</span>
+      </div>
+    </div>
 
-    <div class="kpis">
-      <div class="kpi" id="kpiTotal"></div>
-      <div class="kpi" id="kpiFtpt"></div>
-      <div class="kpi" id="kpiPrograms"></div>
+    <div class="kpi-card">
+      <div class="kpi-label">Total Enrollment (Headcount)</div>
+      <div class="kpi-value" id="kpiTotal">5633</div>
     </div>
 
     <div class="grid">
       <div class="card">
-        <h3>Headcount by Full-Time / Part-Time</h3>
+        <h3>Enrollment by Admission Type</h3>
+        <canvas id="admitChart"></canvas>
+      </div>
+
+      <div class="card">
+        <h3>Enrollment by Full-Time / Part-Time</h3>
         <canvas id="ftptChart"></canvas>
       </div>
+
       <div class="card">
-        <h3>Headcount by Gender</h3>
+        <h3>Enrollment by Gender</h3>
         <canvas id="genderChart"></canvas>
       </div>
-      <div class="card" style="grid-column: 1 / span 2;">
+
+      <div class="card">
         <h3>Top Programs (Headcount)</h3>
-        <canvas id="progChart"></canvas>
+        <canvas id="programChart"></canvas>
       </div>
     </div>
+
+    <div class="footnote">Labels show N and percent of total headcount.</div>
   </div>
 
-<script>
-  const data = {"meta": {"term": "1262", "generated_ts": "2026-01-27 09:46:58", "source_path": "C:\\Users\\pkoci\\OneDrive - CUNY\\Documents - Hostos OIERA\\OIERA Data Exchange\\Current Term File\\Daily_Updates_Show\\Incoming\\dly_cbil_history_f.csv"}, "kpis": {"total_headcount": 5633, "ft_headcount": 2165, "pt_headcount": 3468, "program_count": 31}, "ftpt": [{"label": "PART-TIME", "n": 3468}, {"label": "FULL-TIME", "n": 2165}], "gender": [{"label": "Women", "n": 3791}, {"label": "Men", "n": 1842}], "programs": [{"label": "Liberal Arts and Science AA", "n": 1350}, {"label": "Non Degree Undergraduate", "n": 1073}, {"label": "Radiologic Technology AAS", "n": 677}, {"label": "Dental Hygiene AAS", "n": 450}, {"label": "Early Childhood Education AAS", "n": 247}, {"label": "Practical Nursing CERT", "n": 239}, {"label": "Business Management AS", "n": 232}, {"label": "Criminal Justice AA", "n": 219}, {"label": "Nursing AAS", "n": 174}, {"label": "Computer Science AS", "n": 168}, {"label": "Game Design AAS", "n": 119}, {"label": "Digital Dsgn and Animation AAS", "n": 98}]};
+  <script>
+    const dashboardData = {"meta": {"term": "1262", "generated_ts": "2026-01-27 12:23:02", "csv_path": "C:\\Users\\pkoci\\OneDrive - CUNY\\Documents - Hostos OIERA\\OIERA Data Exchange\\Current Term File\\Daily_Updates_Show\\Incoming\\dly_cbil_history_f.csv", "total_headcount": 5633}, "admit": [{"label": "Continuing Degree", "count": 3474, "pct": 61.7, "avg_gpa": null, "avg_credits": null}, {"label": "College Now", "count": 561, "pct": 10.0, "avg_gpa": null, "avg_credits": null}, {"label": "Undergraduate Transfer from Unknown Sources", "count": 437, "pct": 7.8, "avg_gpa": null, "avg_credits": null}, {"label": "First-time Freshman", "count": 389, "pct": 6.9, "avg_gpa": null, "avg_credits": null}, {"label": "Undergraduate Readmit", "count": 255, "pct": 4.5, "avg_gpa": null, "avg_credits": null}, {"label": "Early College Initiative", "count": 230, "pct": 4.1, "avg_gpa": null, "avg_credits": null}, {"label": "Unknown", "count": 192, "pct": 3.4, "avg_gpa": null, "avg_credits": null}, {"label": "First-time Nondegree", "count": 52, "pct": 0.9, "avg_gpa": null, "avg_credits": null}, {"label": "Continuing Nondegree", "count": 41, "pct": 0.7, "avg_gpa": null, "avg_credits": null}, {"label": "Internal Transfer from Undergraduate Nondegree to Degree", "count": 1, "pct": 0.0, "avg_gpa": null, "avg_credits": null}, {"label": "Nondegree Readmit", "count": 1, "pct": 0.0, "avg_gpa": null, "avg_credits": null}], "ftpt": [{"label": "PART-TIME", "count": 3468, "pct": 61.6}, {"label": "FULL-TIME", "count": 2165, "pct": 38.4}], "gender": [{"label": "Women", "count": 3791, "pct": 67.3}, {"label": "Men", "count": 1842, "pct": 32.7}], "programs": [{"label": "Liberal Arts and Science AA", "count": 1350, "pct": 24.0}, {"label": "Non Degree Undergraduate", "count": 1073, "pct": 19.0}, {"label": "Radiologic Technology AAS", "count": 677, "pct": 12.0}, {"label": "Dental Hygiene AAS", "count": 450, "pct": 8.0}, {"label": "Early Childhood Education AAS", "count": 247, "pct": 4.4}, {"label": "Practical Nursing CERT", "count": 239, "pct": 4.2}, {"label": "Business Management AS", "count": 232, "pct": 4.1}, {"label": "Criminal Justice AA", "count": 219, "pct": 3.9}, {"label": "Nursing AAS", "count": 174, "pct": 3.1}, {"label": "Computer Science AS", "count": 168, "pct": 3.0}, {"label": "Game Design AAS", "count": 119, "pct": 2.1}, {"label": "Digital Dsgn and Animation AAS", "count": 98, "pct": 1.7}, {"label": "Accounting AS", "count": 66, "pct": 1.2}, {"label": "Community Health AS", "count": 66, "pct": 1.2}, {"label": "Electrical Engineering Sci AS", "count": 57, "pct": 1.0}]};
 
-  function safeRegister() {
-    if (typeof Chart === 'undefined') return false;
-    if (typeof ChartDataLabels !== 'undefined') Chart.register(ChartDataLabels);
-    return true;
-  }
-
-  function kpiHTML(title, big, small) {
-    return '<h4>' + title + '</h4>' +
-           '<div class="big">' + big + '</div>' +
-           '<div class="small">' + small + '</div>';
-  }
-
-  function barConfig(labels, values, horizontal=true) {
-    const maxVal = Math.max(...values, 0);
-    return {
-      type: 'bar',
-      data: { labels: labels, datasets: [{ label: 'Headcount', data: values, borderRadius: 10, barThickness: 18, clip: false }] },
-      options: {
-        responsive:true,
-        maintainAspectRatio:false,
-        indexAxis: horizontal ? 'y' : 'x',
-        layout: { padding: { right: 40, left: 6, top: 6, bottom: 6 } },
-        plugins: {
-          legend: { display:false },
-          datalabels: {
-            anchor: 'end',
-            align: 'right',
-            clamp: true,
-            clip: false,
-            formatter: (v)=> v.toLocaleString()
-          }
-        },
-        scales: {
-          x: { beginAtZero:true, suggestedMax: maxVal * 1.10, grid:{ color:'rgba(17,24,39,.06)'} },
-          y: { grid:{ display:false }, ticks:{ font:{ size:11 } } }
-        }
+    function safeRegister() {
+      if (typeof Chart === 'undefined') {
+        console.error('Chart.js failed to load.');
+        return false;
       }
-    };
-  }
+      if (typeof ChartDataLabels !== 'undefined') {
+        Chart.register(ChartDataLabels);
+      }
+      return true;
+    }
 
-  window.addEventListener('DOMContentLoaded', ()=>{
-    if (!safeRegister()) return;
+    function fmtNPercent(row) {
+      const n = row?.count ?? 0;
+      const pct = row?.pct ?? 0;
+      return n.toLocaleString() + " (" + pct + "%)";
+    }
 
-    const total = data.kpis.total_headcount || 0;
-    const ft = data.kpis.ft_headcount || 0;
-    const pt = data.kpis.pt_headcount || 0;
-    const nprog = data.kpis.program_count || 0;
+    function buildBarFromRows(rows, horizontal=true, thick=18, extraRightPad=90) {
+      rows = rows || [];
+      const labels = rows.map(r => r.label);
+      const values = rows.map(r => (r.count ?? 0));
+      const maxVal = Math.max(...values, 0);
 
-    document.getElementById('kpiTotal').innerHTML = kpiHTML('Total Headcount', total.toLocaleString(), 'Term ' + data.meta.term);
-    document.getElementById('kpiFtpt').innerHTML  = kpiHTML('FT / PT', ft.toLocaleString() + ' / ' + pt.toLocaleString(), 'Full-time / Part-time');
-    document.getElementById('kpiPrograms').innerHTML = kpiHTML('Programs (seen)', nprog.toLocaleString(), 'Distinct CF_ACAD_PLAN_DESCR in term');
+      return {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Headcount',
+            data: values,
+            borderRadius: 10,
+            barThickness: thick,
+            clip: false
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: horizontal ? 'y' : 'x',
+          layout: { padding: { right: horizontal ? extraRightPad : 18, left: 6, top: 6, bottom: horizontal ? 6 : 22 } },
+          plugins: {
+            legend: { display: false },
+            datalabels: {
+              anchor: 'end',
+              align: horizontal ? 'right' : 'top',
+              clamp: true,
+              clip: false,
+              formatter: (value, ctx) => fmtNPercent(rows[ctx.dataIndex])
+            },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => fmtNPercent(rows[ctx.dataIndex])
+              }
+            }
+          },
+          scales: {
+            x: { beginAtZero: true, suggestedMax: maxVal * 1.10, grid: { color: 'rgba(17,24,39,.06)' } },
+            y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+          }
+        }
+      };
+    }
 
-    new Chart(document.getElementById('ftptChart'), barConfig(
-      data.ftpt.map(d=>d.label),
-      data.ftpt.map(d=>d.n),
-      true
-    ));
+    window.addEventListener('DOMContentLoaded', () => {
+      if (!safeRegister()) return;
 
-    new Chart(document.getElementById('genderChart'), barConfig(
-      data.gender.map(d=>d.label),
-      data.gender.map(d=>d.n),
-      true
-    ));
+      // Pretty-format KPI (commas)
+      const total = dashboardData.meta?.total_headcount ?? 0;
+      document.getElementById('kpiTotal').textContent = total.toLocaleString();
 
-    // programs: vertical to fit labels better
-    new Chart(document.getElementById('progChart'), barConfig(
-      data.programs.map(d=>d.label),
-      data.programs.map(d=>d.n),
-      false
-    ));
-  });
-</script>
+      // Admission config + tooltip extras (avg GPA / credits)
+      const admitRows = dashboardData.admit || [];
+      const admitCfg = buildBarFromRows(admitRows, true, 18, 110);
+      admitCfg.options.plugins.tooltip.callbacks.afterBody = (items) => {
+        const i = items?.[0]?.dataIndex ?? 0;
+        const r = admitRows[i] || {};
+        const extra = [];
+        if (r.avg_gpa !== null && r.avg_gpa !== undefined) extra.push("Avg GPA: " + r.avg_gpa);
+        if (r.avg_credits !== null && r.avg_credits !== undefined) extra.push("Avg Credits: " + r.avg_credits);
+        return extra;
+      };
+      new Chart(document.getElementById('admitChart'), admitCfg);
+
+      new Chart(document.getElementById('ftptChart'), buildBarFromRows(dashboardData.ftpt || [], true, 18, 110));
+      new Chart(document.getElementById('genderChart'), buildBarFromRows(dashboardData.gender || [], true, 18, 110));
+      new Chart(document.getElementById('programChart'), buildBarFromRows(dashboardData.programs || [], true, 16, 140)
+);
+    });
+  </script>
 </body>
 </html>
