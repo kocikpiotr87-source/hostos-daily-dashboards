@@ -49,20 +49,7 @@
 <body>
   <div class="page">
     <div class="title">Reenrollment Tracker – 1259 to 1262</div>
-    <div class="subtitle">Generated: 2026-01-26 22:49:12 &nbsp;&nbsp; | &nbsp;&nbsp; Source: C:\Users\pkoci\OneDrive - CUNY\Documents - Hostos OIERA\OIERA Data Exchange\Current Term File\Daily_Updates_Show\Outputs\enrollment_latest.parquet &nbsp;&nbsp; | &nbsp;&nbsp; Cohort: Freshmen + Transfers</div>
-    <div id="pbi-links" style="margin: 8px 0 14px 0;">
-      <div style="background:#ffffff; border-radius:12px; padding:10px 12px; box-shadow: 0 10px 30px rgba(17,24,39,.06);">
-        <div style="font-size:12px; color:#374151; line-height:1.35;">
-          <b>Power BI Report:</b>
-          <a href="https://app.powerbi.com/links/91UmCKat20?ctid=6f60f0b3-5f06-4e09-9715-989dba8cc7d8&pbi_source=linkShare" target="_blank" rel="noopener">Open in Power BI Service</a>
-          &nbsp;|&nbsp;
-          <b>PDF Export:</b>
-          <a href="pbi_report.pdf" target="_blank" rel="noopener">pbi_report.pdf</a>
-          <span style="color:#9ca3af;">(Reenrollment)</span>
-        </div>
-      </div>
-    </div>
-
+    <div class="subtitle">Generated: 2026-01-27 09:27:06 &nbsp;&nbsp; | &nbsp;&nbsp; Source: C:\Users\pkoci\OneDrive - CUNY\Documents - Hostos OIERA\OIERA Data Exchange\Current Term File\Daily_Updates_Show\Incoming\dly_cbil_history_f.csv &nbsp;&nbsp; | &nbsp;&nbsp; Cohort: Freshmen + Transfers</div>
 
     <div class="kpis">
       <div class="kpi" id="kpiOverall"></div>
@@ -89,7 +76,7 @@
   </div>
 
   <script>
-    const dashboardData = {"meta": {"source_term": "1259", "target_term": "1262", "generated_ts": "2026-01-26 22:49:12", "csv_path": "C:\\Users\\pkoci\\OneDrive - CUNY\\Documents - Hostos OIERA\\OIERA Data Exchange\\Current Term File\\Daily_Updates_Show\\Outputs\\enrollment_latest.parquet"}, "overall": {"total": 1672, "reenrolled": 1266, "rate": 75.7}, "freshmen": {"total": 976, "reenrolled": 725, "rate": 74.3}, "transfers": {"total": 696, "reenrolled": 541, "rate": 77.7}, "ftpt": [{"label": "FULL-TIME", "total": 1081, "reenrolled": 889, "rate": 82.2}, {"label": "PART-TIME", "total": 591, "reenrolled": 377, "rate": 63.8}], "gender": [{"label": "Women", "total": 1135, "reenrolled": 867, "rate": 76.4}, {"label": "Men", "total": 537, "reenrolled": 399, "rate": 74.3}], "programs": [{"label": "Liberal Arts and Science AA", "total": 459, "reenrolled": 355, "rate": 77.3}, {"label": "Radiologic Technology AAS", "total": 316, "reenrolled": 241, "rate": 76.3}, {"label": "Dental Hygiene AAS", "total": 161, "reenrolled": 122, "rate": 75.8}, {"label": "Practical Nursing CERT", "total": 113, "reenrolled": 74, "rate": 65.5}, {"label": "Business Management AS", "total": 97, "reenrolled": 71, "rate": 73.2}, {"label": "Criminal Justice AA", "total": 87, "reenrolled": 67, "rate": 77.0}, {"label": "Computer Science AS", "total": 68, "reenrolled": 50, "rate": 73.5}, {"label": "Early Childhood Education AAS", "total": 59, "reenrolled": 47, "rate": 79.7}, {"label": "Game Design AAS", "total": 49, "reenrolled": 41, "rate": 83.7}, {"label": "Digital Dsgn and Animation AAS", "total": 45, "reenrolled": 37, "rate": 82.2}]};
+    const dashboardData = {"meta": {"source_term": "1259", "target_term": "1262", "generated_ts": "2026-01-27 09:27:06", "csv_path": "C:\\Users\\pkoci\\OneDrive - CUNY\\Documents - Hostos OIERA\\OIERA Data Exchange\\Current Term File\\Daily_Updates_Show\\Incoming\\dly_cbil_history_f.csv"}, "overall": {"total": 1672, "reenrolled": 1266, "rate": 75.7}, "freshmen": {"total": 976, "reenrolled": 725, "rate": 74.3}, "transfers": {"total": 696, "reenrolled": 541, "rate": 77.7}, "ftpt": [{"label": "FULL-TIME", "total": 1081, "reenrolled": 889, "rate": 82.2}, {"label": "PART-TIME", "total": 591, "reenrolled": 377, "rate": 63.8}], "gender": [{"label": "Women", "total": 1135, "reenrolled": 867, "rate": 76.4}, {"label": "Men", "total": 537, "reenrolled": 399, "rate": 74.3}], "programs": [{"label": "Liberal Arts and Science AA", "total": 459, "reenrolled": 355, "rate": 77.3}, {"label": "Radiologic Technology AAS", "total": 316, "reenrolled": 241, "rate": 76.3}, {"label": "Dental Hygiene AAS", "total": 161, "reenrolled": 122, "rate": 75.8}, {"label": "Practical Nursing CERT", "total": 113, "reenrolled": 74, "rate": 65.5}, {"label": "Business Management AS", "total": 97, "reenrolled": 71, "rate": 73.2}, {"label": "Criminal Justice AA", "total": 87, "reenrolled": 67, "rate": 77.0}, {"label": "Computer Science AS", "total": 68, "reenrolled": 50, "rate": 73.5}, {"label": "Early Childhood Education AAS", "total": 59, "reenrolled": 47, "rate": 79.7}, {"label": "Game Design AAS", "total": 49, "reenrolled": 41, "rate": 83.7}, {"label": "Digital Dsgn and Animation AAS", "total": 45, "reenrolled": 37, "rate": 82.2}]};
 
     function safeRegister() {
       if (typeof Chart === 'undefined') {
@@ -186,7 +173,6 @@
         gender.map(d=>d.label), gender.map(d=>d.total), gender.map(d=>d.reenrolled), gender.map(d=>d.rate), true
       ));
 
-      // Programs: rate-only + labels (and extra bottom padding to reduce cutoff)
       const progRates = progs.map(d => d.rate);
       const maxRate = Math.max(...progRates, 0);
 
